@@ -30,14 +30,16 @@ class OfferController extends Controller
             foreach ($modalities as $modality) {
                 $nameModal = $modality['nome'];
                 $cod = $modality['cod'];
-        //check if the offer already exists
+                
+                // check if the offer already exists
                 $existingOffer = Offer::where([
                     'cpf' => $cpf,
                     'institution_id' => $institutionId,
                     'name_modal' => $nameModal,
                     'cod' => $cod,
                 ])->first();
-        //if it doesn't exist, create a new one
+                
+                // if it doesn't exist, create a new one
                 if (!$existingOffer) {
                     Offer::create([
                         'cpf' => $cpf,
@@ -67,7 +69,6 @@ class OfferController extends Controller
 
 
         // iterate over the institutions and modalities so we can save a new offer for each one
-        
         foreach ($institutions as $institution) {
             $institutionId = $institution['id'];
             $institutionName = $institution['nome'];
@@ -77,17 +78,26 @@ class OfferController extends Controller
                 $nameModal = $modality['nome'];
                 $cod = $modality['cod'];
 
-        //check if the offer already exists
+                echo($institutionId);
+                echo($cod);
+                $detailsOffer = Http::post('https://dev.gosat.org/api/v1/simulacao/oferta', [
+                    'cpf' => $cpf,
+                    'instituicao' => $institutionId,
+                    'modalidade' => $cod
+                ]);
 
+                $details = $detailsOffer->json();
+                return dd($details);
+                
+                // check if the offer already exists
                 $existingOffer = Offer::where([
                     'cpf' => $cpf,
                     'institution_id' => $institutionId,
                     'name_modal' => $nameModal,
                     'cod' => $cod,
                 ])->first();
-
-        //if it doesn't exist, create a new one
-
+                
+                // if it doesn't exist, create a new one
                 if (!$existingOffer) {
                     Offer::create([
                         'cpf' => $cpf,
@@ -103,5 +113,5 @@ class OfferController extends Controller
         $offers = Offer::where('cpf', $cpf)->get();
 
         return view('welcome', compact('offers'));
-}
+    }
 }

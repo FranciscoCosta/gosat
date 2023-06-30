@@ -16,6 +16,13 @@ return new class extends Migration
             $table->integer('institution_id');
             $table->string('name_modal');
             $table->string('cod');
+            $table->integer('PMax');
+            $table->integer('PMin');
+            $table->integer('PMedium');
+            $table->integer('VMin');
+            $table->integer('VMax');
+            $table->integer('VMedium');
+            $table->decimal('TaxesMonth', 4, 4);
             $table->timestamps();
         });
     }
@@ -25,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schemaa::dropIfExists('offer');
+        Schema::dropIfExists('offer');
     }
 };
