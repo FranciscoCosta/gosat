@@ -95,6 +95,8 @@ class OfferController extends Controller
                 ])->first();
 
 
+
+
                 
                 // if it doesn't exist, create a new one
                 if (!$existingOffer) {
@@ -125,5 +127,12 @@ class OfferController extends Controller
         $offers = Offer::where('cpf', $cpf)->get();
 
         return view('welcome', compact('offers'));
+    }
+
+    public function getLowestTaxes(Request $request)
+    {
+        $Filteredoffers = Offer::orderBy('TaxesMonth', 'asc')->limit(3)->get();
+    
+        return view('welcome', compact('Filteredoffers'));
     }
 }

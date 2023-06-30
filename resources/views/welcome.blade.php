@@ -20,9 +20,7 @@
                     <label class="user-label">Cpf</label>
                 </div>
                 <button type="submit" class="submit__cpf">Enviar</button>
-
             </form>
-        
         </div>
         <div class="display__container">
             <div class="display__offer-card">
@@ -31,25 +29,47 @@
                 <div class="offer__container-left">
                     @foreach($offers as $offer)
                     <div class="offer__card">
-                    <div class="offer-show">
-                        <p class="offer__text">Cpf do usuário: {{$offer['cpf']}}</p>
+                        <div class="offer-show">
+                            <p class="offer__text">Cpf do usuário: {{ $offer->cpf }}</p>
+                        </div>
+                        <div class="offer-show">
+                            <p class="offer__text">Instituição: {{ $offer->institution }}</p>
+                        </div>
+                        <div class="offer-show">
+                            <p class="offer__text">Modalidade: {{ $offer->name_modal }}</p>
+                        </div>
                     </div>
-                    <div class="offer-show">
-                        <p class="offer__text">Instituição: {{$offer['institution']}}</p>
-                    </div>
-                    <div class="offer-show">
-                        <p class="offer__text">Modalidade: {{$offer['name_modal']}}</p>
-                    </div>
-                        <button>
-                            Ver mais
-                        </button>
-                    </form>
+                    @endforeach
+                </div>
+                <div class="offer__container-left">
+                    @foreach($offers as $offer)
+                    <div class="offer__card">
+                        <div class="offer-show">
+                            <p class="offer__text">Quantidade Minima de Parcelas: {{ $offer->PMin }}</p>
+                        </div>
+                        <div class="offer-show">
+                            <p class="offer__text">Instituição: {{ $offer->institution }}</p>
+                        </div>
+                        <div class="offer-show">
+                            <p class="offer__text">Modalidade: {{ $offer->name_modal }}</p>
+                        </div>
                     </div>
                     @endforeach
                 </div>
                 @endif
             </div>
-            </div>
+            <form action="{{ url('api/offers/taxes') }}" method="post">
+                @csrf
+            </form>
+            @if(isset($Filteredoffers))
+
+                <div class="offer__container-left">
+                    @foreach($Filteredoffers as $Filteredoffer)
+                        <p>{{ $Filteredoffer->TaxesMonth }}</p>
+                    @endforeach 
+                </div>
+            @endif
+        </div>
     </div>
 </body>
 </html>

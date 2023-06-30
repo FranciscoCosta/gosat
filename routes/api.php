@@ -12,3 +12,5 @@ Route::get('/', function () {
 Route::post('/offers', [OfferController::class, 'index']);
 
 Route::post('/offers/cpf', [OfferController::class, 'getOffers']);
+
+Route::post('/offers/taxes', [OfferController::class, 'getLowestTaxes']);
