@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class OfferController extends Controller
 {
-    public function index(Request $request)
+    public function offersByCpf(Request $request)
     {
         $cpf = $request->input('cpf');
         if (empty($cpf)) {
@@ -94,10 +94,6 @@ class OfferController extends Controller
                     'cod' => $cod,
                 ])->first();
 
-
-
-
-                
                 // if it doesn't exist, create a new one
                 if (!$existingOffer) {
 
@@ -111,14 +107,6 @@ class OfferController extends Controller
                         'institution_id' => $institutionId,
                         'name_modal' => $nameModal,
                         'cod' => $cod,
-                        'PMin' => $details["QntParcelaMin"],
-                        'PMax' => $details["QntParcelaMax"],
-                        'PMedium' => $PMedium ,
-                        'VMin'=> $details["valorMin"],
-                        'VMax'=> $details["valorMax"],
-                        'VMedium'=> $ValueAsked,
-                        'TaxesMonth'=> $details["jurosMes"],
-                        'ValueToPay' => $ValueToPay
                     ]);
                 }
             }

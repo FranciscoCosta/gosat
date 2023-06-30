@@ -10,7 +10,7 @@
 <body>
     <div class="main__container">
         <div class="order__credit-container">
-            <form action="{{ url('api/offers/cpf') }}" method="post" class="form__cpf">
+            <form action="{{ url('api/offers/') }}" method="post" class="form__cpf">
                 @csrf
                 <h2>Verifique as linhas de créditos disponíveis</h2>
                 <input type="hidden" name="_method" value="POST"> <!-- Add this line if you want to specify the HTTP method -->

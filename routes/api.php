@@ -8,9 +8,15 @@ Route::get('/', function () {
     return response()->json(['message' => 'Jobs API', 'status' => 'Connected']);;
 });
 
+//Get all offers by cpf and save in database and return all offers
+Route::post('/offers/cpf', [OfferController::class, 'offersByCpf']);
 
-Route::post('/offers', [OfferController::class, 'index']);
+Route::post('/offers/details', [OfferController::class, 'offersByCpf']);
 
-Route::post('/offers/cpf', [OfferController::class, 'getOffers']);
 
 Route::post('/offers/taxes', [OfferController::class, 'getLowestTaxes']);
+
+
+
+//Renders bests offers from database for a given cpf by categories top 3
+Route::post('/offers', [OfferController::class, 'getOffers']);
