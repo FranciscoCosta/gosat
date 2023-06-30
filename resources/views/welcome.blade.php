@@ -28,7 +28,7 @@
             <div class="display__offer-card">
                 @if(isset($offers))
                 <h2>Ofertas:</h2>
-                <div class="offer__container">
+                <div class="offer__container-left">
                     @foreach($offers as $offer)
                     <div class="offer__card">
                     <div class="offer-show">

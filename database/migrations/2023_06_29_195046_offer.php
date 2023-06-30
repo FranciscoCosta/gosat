@@ -16,13 +16,14 @@ return new class extends Migration
             $table->integer('institution_id');
             $table->string('name_modal');
             $table->string('cod');
-            $table->integer('PMax');
-            $table->integer('PMin');
-            $table->integer('PMedium');
-            $table->integer('VMin');
-            $table->integer('VMax');
-            $table->integer('VMedium');
-            $table->decimal('TaxesMonth', 4, 4);
+            $table->integer('PMax')->nullable();
+            $table->integer('PMin')->nullable();
+            $table->integer('PMedium')->nullable();
+            $table->integer('VMin')->nullable();
+            $table->integer('VMax')->nullable();
+            $table->integer('VMedium')->nullable();
+            $table->decimal('TaxesMonth', 4, 4)->nullable();
+            $table->decimal('ValueToPay', 10, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -78,17 +78,14 @@ class OfferController extends Controller
                 $nameModal = $modality['nome'];
                 $cod = $modality['cod'];
 
-                echo($institutionId);
-                echo($cod);
                 $detailsOffer = Http::post('https://dev.gosat.org/api/v1/simulacao/oferta', [
                     'cpf' => $cpf,
-                    'instituicao' => $institutionId,
-                    'modalidade' => $cod
+                    'instituicao_id' => $institutionId,
+                    'codModalidade' => $cod
                 ]);
-
-                $details = $detailsOffer->json();
-                return dd($details);
                 
+                $details = $detailsOffer->json();
+
                 // check if the offer already exists
                 $existingOffer = Offer::where([
                     'cpf' => $cpf,
@@ -96,15 +93,30 @@ class OfferController extends Controller
                     'name_modal' => $nameModal,
                     'cod' => $cod,
                 ])->first();
+
+
                 
                 // if it doesn't exist, create a new one
                 if (!$existingOffer) {
+
+                    $PMedium = ($details["QntParcelaMin"] + $details["QntParcelaMax"]) / 2;
+                    $ValueAsked = ($details["valorMin"] + $details["valorMax"]) / 2;
+                    $ValueToPay = $ValueAsked * (0.05 * $PMedium);
+
                     Offer::create([
                         'cpf' => $cpf,
                         'institution' => $institutionName,
                         'institution_id' => $institutionId,
                         'name_modal' => $nameModal,
                         'cod' => $cod,
+                        'PMin' => $details["QntParcelaMin"],
+                        'PMax' => $details["QntParcelaMax"],
+                        'PMedium' => $PMedium ,
+                        'VMin'=> $details["valorMin"],
+                        'VMax'=> $details["valorMax"],
+                        'VMedium'=> $ValueAsked,
+                        'TaxesMonth'=> $details["jurosMes"],
+                        'ValueToPay' => $ValueToPay
                     ]);
                 }
             }
