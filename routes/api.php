@@ -11,9 +11,10 @@ Route::get('/', function () {
 //Get all offers by cpf and save in database and return all offers
 Route::post('/offers/cpf', [OfferController::class, 'offersByCpf']);
 
-Route::post('/offers/details', [OfferController::class, 'offersByCpf']);
+//Get the details of a given offer
+Route::post('/offer/details', [OfferController::class, 'offerDetails']);
 
-
+//Get the 3 best offers order by taxes
 Route::post('/offers/taxes', [OfferController::class, 'getLowestTaxes']);
 
 
