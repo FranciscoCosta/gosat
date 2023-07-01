@@ -177,6 +177,9 @@ class OfferController extends Controller
 
                 $details = $detailsOffer->json();
 
+                $PMedium = ($details["QntParcelaMin"] + $details["QntParcelaMax"]) / 2;
+                $ValueAsked = ($details["valorMin"] + $details["valorMax"]) / 2;
+                $ValueToPay = $ValueAsked * (0.05 * $PMedium);
                 // check if the offer already exists
                 $existingOffer = Offer::where([
                     'cpf' => $cpf,
@@ -184,6 +187,22 @@ class OfferController extends Controller
                     'name_modal' => $nameModal,
                     'cod' => $cod,
                 ])->first();
+
+                $existingOffer->update([
+                    'cpf' => $cpf,
+                    'instituicao_id' => $institutionId,
+                    'codModalidade' => $cod,
+                    'PMin' => $details["QntParcelaMin"],
+                    'PMax' => $details["QntParcelaMax"],
+                    'PMedium' => $PMedium,
+                    'VMin' => $details["valorMin"],
+                    'VMax' => $details["valorMax"],
+                    'VMedium' => $ValueAsked,
+                    'TaxesMonth' => $details["jurosMes"],
+                    'ValueToPay' => $ValueToPay
+                ]);
+
+                //Update values
 
                 // if it doesn't exist, create a new one
                 if (!$existingOffer) {
@@ -214,5 +233,17 @@ class OfferController extends Controller
         $offers = Offer::where('cpf', $cpf)->get();
 
         return view('welcome', compact('offers'));
+    }
+
+    public function getLowestTaxes(Request $request)
+    {
+    $cpf = $request->input('cpf');
+    if (empty($cpf)) {
+        return response()->json(['message' => 'CPF not found.'], 422);
+    }
+    $orderByLowestTax = Offer::where('cpf', $cpf)->orderBy('TaxesMonth', 'asc')->get();
+    
+    return response()->json(['bestOffers' => $orderByLowestTax], 200);
+
     }
 }
