@@ -241,9 +241,21 @@ class OfferController extends Controller
     if (empty($cpf)) {
         return response()->json(['message' => 'CPF not found.'], 422);
     }
-    $orderByLowestTax = Offer::where('cpf', $cpf)->orderBy('TaxesMonth', 'asc')->get();
+    $orderByLowestTax = Offer::where('cpf', $cpf)->orderBy('TaxesMonth', 'asc')->take(3)->get();
     
-    return response()->json(['bestOffers' => $orderByLowestTax], 200);
+    $LowestTaxResult = $orderByLowestTax->map(function ($item, $key) {
+        return [
+            'cpf' => $item->cpf,
+            'institution' => $item->institution,
+            'nameModality' => $item->name_modal,
+            'parcelQuantity' => $item->PMedium,
+            'askedPrice' => $item->VMedium,
+            'TaxesMonth' => $item->TaxesMonth,
+            'ValueToPay' => $item->ValueToPay
+        ];
+    });
+
+    return response()->json(['bestOffers' => $LowestTaxResult], 200);
 
     }
 }
