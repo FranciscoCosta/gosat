@@ -21,8 +21,8 @@
             </form>
         </div>
         <div class="display__container">
-            <h1>Melhores ofertas</h1>
             @if(isset($lowestTaxes))
+            <h1>Melhores ofertas</h1>
                 <div class="display__container-card">
                     <h2>Menores taxas de juros</h2>
                     <div class="display__offers">
@@ -47,7 +47,7 @@
                                 <div class="offer__card">
                                     <h3>Instituição: <span> {{ $offer->institution }}</span></h3>
                                     <h3>Modalidade: <span> {{ $offer->name_modal }}</span></h3>
-                                    <h3>Crédito até: <span> {{ $offer->VMax }}BRL</span></h3>
+                                    <h3>Crédito até: <span> {{ $offer->VMax }} - BRL</span></h3>
                                 </div>
                             </div>
                         @endforeach
