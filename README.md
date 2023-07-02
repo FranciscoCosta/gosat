@@ -1,66 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Desafio Leadster
 
-## About Laravel
+Bem-vindo ao repositório do desafio técnico de da empresa Gosat.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![App Screenshot](https://www.gosat.org/wp-content/uploads/2022/03/gosat-logo-1.png)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+# Descrição do Projeto
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+O projeto em questão foi desenvolvido com Laravel sails e tinha como objetivo consumir uma API. O fluxo do projeto consistia em receber o CPF do usuário e enviar uma requisição para a API, que retornava as possíveis instituições de crédito e o tipo de modalidade disponíveis para o usuário.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Após receber essas informações, era necessário fazer outra requisição para um endpoint específico da API, passando o CPF, o ID da instituição e a modalidade de crédito selecionada. A finalidade dessa requisição era obter informações detalhadas sobre o crédito, tais como o valor a ser pago, taxa de juros e limites do crédito por último tinhamos que salvar esses dados numa base de dados.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Posteriormente, como parte do projeto, era necessário criar uma API que retornasse os três melhores resultados para o usuário, seguindo uma regra de negócio definida por nós. Essa regra de negócio estabelecia critérios específicos para a seleção das melhores opções de crédito, levando em consideração fatores como taxa de juros, valor a ser pago e limites do crédito. Por último temos de salvar esses dados numa base de dados de forma a persistirem.
 
-## Laravel Sponsors
+Em resumo, o projeto desenvolvido em Laravel tinha como objetivo principal consumir uma API, utilizando o CPF do usuário como parâmetro, e retornar informações sobre as instituições de crédito disponíveis, bem como detalhes sobre as melhores opções de crédito com base em uma regra de negócio predefinida.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+# Estrutura das rotas
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Rota**: http://0.0.0.0/api/offers/cpf
 
-## Code of Conduct
+**Método**: POST
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+![App Screenshot](https://i.ibb.co/zsdvKzF/image.png)
 
-## Security Vulnerabilities
+**Descrição:**  Retorna as possíveis instituições de crédito e o tipo de modalidade disponíveis para o usuário, com base no CPF fornecido. Os dados também são salvos na base de dados para referência futura.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+**Rota**: http://0.0.0.0/api/offer/details
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Método**: POST
+
+![App Screenshot](https://i.ibb.co/pxSN9SX/image.png)
+
+**Descrição:** 
+Recebe o CPF, o ID da instituição e a modalidade de crédito selecionada. Essa rota busca informações detalhadas sobre o crédito, como o valor a ser pago, taxa de juros e limites do crédito. Em seguida, salva essas informações na base de dados para uso posterior.
+
+**Rota**: http://0.0.0.0/api/offers/taxes
+
+**Método**: POST
+
+![App Screenshot](https://i.ibb.co/Kr8M2Pj/image.png)
+
+**Descrição:**  Utiliza as ofertas gravadas na base de dados para calcular um valor médio de crédito (máximo valor de crédito somado ao menor valor de crédito) e para as parcelas. Em seguida, retorna os três registros com as menores taxas de juros, valor do empréstimo e valor a ser pago.
+
+**Rota**: http://0.0.0.0/api/offers/credit
+
+**Método**: POST
+
+![App Screenshot](https://i.ibb.co/pfJB4rH/image.png)
+
+**Descrição:**  Utiliza as ofertas gravadas na base de dados para calcular um valor médio de crédito (máximo valor de crédito somado ao menor valor de crédito) e para as parcelas. Em seguida, retorna os três registros com os maiores valores de crédito disponíveis, juntamente com as taxas de juros, valor do empréstimo e valor a ser pago.
+
+**Rota**: http://0.0.0.0/api/offers/parcel
+
+**Método**: POST
+
+![App Screenshot](https://i.ibb.co/tqfYdcV/image.png)
+
+**Descrição:**  Utiliza as ofertas gravadas na base de dados para calcular um valor médio de crédito (máximo valor de crédito somado ao menor valor de crédito) e para as parcelas. Em seguida, retorna os três registros com o menor número de parcelas a serem pagas, juntamente com as taxas de juros, valor do empréstimo e valor a ser pago.
+
+**Rota**: http://0.0.0.0/api/offers
+
+**Método**: POST
+
+![App Screenshot](https://i.ibb.co/4pTnMFF/image.png)
+
+**Descrição:**  Acessível via interface web, essa rota recebe um CPF como parâmetro e retorna as três melhores ofertas com a menor taxa de juros, as três melhores ofertas com o maior crédito disponível e as três melhores ofertas com o menor número de parcelas, com base nas ofertas gravadas na base de dados.
+
+## Rodando localmente
+
+### Antes de começar
+
+**Verificar se o Laravel Sails se encontra instalado na sua máquina**
+
+No macOS e no Linux, o Laravel Sail geralmente é instalado automaticamente ao instalar o Laravel usando o Composer. Não é necessário fazer nenhuma instalação adicional.
+
+No Windows, é necessário instalar o WSL 2 (Windows Subsystem for Linux) e o Docker Desktop. Em seguida, o Laravel Sail pode ser instalado usando o Composer.
+
+Para mais informações sobre **Laravel sails** 
+
+https://laravel.com/docs/10.x/sail
+
+
+
+Clone o projeto
+
+```bash
+  git clone git@github.com:FranciscoCosta/gosat.git
+```
+
+Entre no diretório do projeto
+
+```bash
+  cd gosat
+```
+
+Altere o nome de **.env.example**  para -> **.env**
+
+
+Execute o seguinte comando para iniciar os contêineres do Laravel Sail:
+
+```bash
+  ./vendor/bin/sail up
+```
+
+Num novo terminal, **(sem fechar o anterior )** execute o seguinte comando :
+
+```bash
+  php artisan migrate
+
+```
+Rodar a interface abra o seu navegador e coloque a seguinte rota: 
+
+```bash
+ http://localhost/
+```
+
+
+
+
+## Autor
+
+- [Francisco Costa](https://github.com/FranciscoCosta/)
+
