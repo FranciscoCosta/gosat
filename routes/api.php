@@ -17,6 +17,8 @@ Route::post('/offer/details', [OfferController::class, 'offerDetails']);
 //Get the 3 best offers order by taxes
 Route::post('/offers/taxes', [OfferController::class, 'getLowestTaxes']);
 
+Route::post('/offers/credit', [OfferController::class, 'getBiggestCredit']);
+
 
 
 //Renders bests offers from database for a given cpf by categories top 3

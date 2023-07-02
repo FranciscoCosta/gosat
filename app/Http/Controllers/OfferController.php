@@ -254,8 +254,32 @@ class OfferController extends Controller
             'ValueToPay' => $item->ValueToPay
         ];
     });
-
     return response()->json(['bestOffers' => $LowestTaxResult], 200);
 
     }
+
+
+    public function getBiggestCredit(Request $request)
+    {
+    $cpf = $request->input('cpf');
+    if (empty($cpf)) {
+        return response()->json(['message' => 'CPF not found.'], 422);
+    }
+    $orderByBiggestCredit = Offer::where('cpf', $cpf)->orderBy('VMax', 'desc')->take(3)->get();
+    
+    $BiggestCreditResult = $orderByBiggestCredit->map(function ($item, $key) {
+        return [
+            'cpf' => $item->cpf,
+            'institution' => $item->institution,
+            'nameModality' => $item->name_modal,
+            'parcelQuantity' => $item->PMedium,
+            'askedPrice' => $item->VMedium,
+            'MaxCredit' => $item->VMax,
+            'TaxesMonth' => $item->TaxesMonth,
+            'ValueToPay' => $item->ValueToPay
+        ];
+    });
+    return response()->json(['bestOffers' => $BiggestCreditResult], 200);
+}
+
 }
