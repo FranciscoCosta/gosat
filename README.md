@@ -76,18 +76,6 @@ Recebe o CPF, o ID da instituição e a modalidade de crédito selecionada. Essa
 
 ### Antes de começar
 
-**Verificar se o Laravel Sails se encontra instalado na sua máquina**
-
-No macOS e no Linux, o Laravel Sail geralmente é instalado automaticamente ao instalar o Laravel usando o Composer. Não é necessário fazer nenhuma instalação adicional.
-
-No Windows, é necessário instalar o WSL 2 (Windows Subsystem for Linux) e o Docker Desktop. Em seguida, o Laravel Sail pode ser instalado usando o Composer.
-
-Para mais informações sobre **Laravel sails** 
-
-https://laravel.com/docs/10.x/sail
-
-
-
 Clone o projeto
 
 ```bash
@@ -99,8 +87,11 @@ Entre no diretório do projeto
 ```bash
   cd gosat
 ```
+Execute o seguinte comando para instalar as dependência do composer:
 
-Altere o nome de **.env.example**  para -> **.env**
+```bash
+  composer install
+```
 
 
 Execute o seguinte comando para iniciar os contêineres do Laravel Sail:
@@ -108,6 +99,10 @@ Execute o seguinte comando para iniciar os contêineres do Laravel Sail:
 ```bash
   ./vendor/bin/sail up
 ```
+
+
+Altere o nome de **.env.example**  para -> **.env**
+
 
 Num novo terminal, **(sem fechar o anterior )** execute o seguinte comando :
 
