@@ -147,93 +147,7 @@ class OfferController extends Controller
         }
     }
 
-    public function getOffers(Request $request)
-    {
-        $cpf = $request->input('cpf');
-        if (empty($cpf)) {
-            return response()->json(['message' => 'CPF not found.'], 422);
-        }
 
-        $response = Http::post('https://dev.gosat.org/api/v1/simulacao/credito', [
-            'cpf' => $cpf
-        ]);
-        $institutions = $response->json()['instituicoes'];
-
-        // iterate over the institutions and modalities so we can save a new offer for each one
-        foreach ($institutions as $institution) {
-            $institutionId = $institution['id'];
-            $institutionName = $institution['nome'];
-            $modalities = $institution['modalidades'];
-
-            foreach ($modalities as $modality) {
-                $nameModal = $modality['nome'];
-                $cod = $modality['cod'];
-
-                $detailsOffer = Http::post('https://dev.gosat.org/api/v1/simulacao/oferta', [
-                    'cpf' => $cpf,
-                    'instituicao_id' => $institutionId,
-                    'codModalidade' => $cod
-                ]);
-
-                $details = $detailsOffer->json();
-
-                $PMedium = ($details["QntParcelaMin"] + $details["QntParcelaMax"]) / 2;
-                $ValueAsked = ($details["valorMin"] + $details["valorMax"]) / 2;
-                $ValueToPay = $ValueAsked * (0.05 * $PMedium);
-                // check if the offer already exists
-                $existingOffer = Offer::where([
-                    'cpf' => $cpf,
-                    'institution_id' => $institutionId,
-                    'name_modal' => $nameModal,
-                    'cod' => $cod,
-                ])->first();
-
-                $existingOffer->update([
-                    'cpf' => $cpf,
-                    'instituicao_id' => $institutionId,
-                    'codModalidade' => $cod,
-                    'PMin' => $details["QntParcelaMin"],
-                    'PMax' => $details["QntParcelaMax"],
-                    'PMedium' => $PMedium,
-                    'VMin' => $details["valorMin"],
-                    'VMax' => $details["valorMax"],
-                    'VMedium' => $ValueAsked,
-                    'TaxesMonth' => $details["jurosMes"],
-                    'ValueToPay' => $ValueToPay
-                ]);
-
-                //Update values
-
-                // if it doesn't exist, create a new one
-                if (!$existingOffer) {
-
-                    $PMedium = ($details["QntParcelaMin"] + $details["QntParcelaMax"]) / 2;
-                    $ValueAsked = ($details["valorMin"] + $details["valorMax"]) / 2;
-                    $ValueToPay = $ValueAsked * (0.05 * $PMedium);
-
-                    Offer::create([
-                        'cpf' => $cpf,
-                        'institution' => $institutionName,
-                        'institution_id' => $institutionId,
-                        'name_modal' => $nameModal,
-                        'cod' => $cod,
-                        'PMin' => $details["QntParcelaMin"],
-                        'PMax' => $details["QntParcelaMax"],
-                        'PMedium' => $PMedium,
-                        'VMin' => $details["valorMin"],
-                        'VMax' => $details["valorMax"],
-                        'VMedium' => $ValueAsked,
-                        'TaxesMonth' => $details["jurosMes"],
-                        'ValueToPay' => $ValueToPay
-                    ]);
-                }
-            }
-        }
-
-        $offers = Offer::where('cpf', $cpf)->get();
-
-        return view('welcome', compact('offers'));
-    }
 
     public function getLowestTaxes(Request $request)
     {
@@ -304,5 +218,97 @@ $LowestParcelResult = $orderByLowestParcel->map(function ($item, $key) {
 });
 return response()->json(['bestOffers' => $LowestParcelResult], 200);
 }
+
+
+public function getOffers(Request $request)
+{
+    $cpf = $request->input('cpf');
+    if (empty($cpf)) {
+        return response()->json(['message' => 'CPF not found.'], 422);
+    }
+
+    $response = Http::post('https://dev.gosat.org/api/v1/simulacao/credito', [
+        'cpf' => $cpf
+    ]);
+    $institutions = $response->json()['instituicoes'];
+
+    // iterate over the institutions and modalities so we can save a new offer for each one
+    foreach ($institutions as $institution) {
+        $institutionId = $institution['id'];
+        $institutionName = $institution['nome'];
+        $modalities = $institution['modalidades'];
+
+        foreach ($modalities as $modality) {
+            $nameModal = $modality['nome'];
+            $cod = $modality['cod'];
+
+            $detailsOffer = Http::post('https://dev.gosat.org/api/v1/simulacao/oferta', [
+                'cpf' => $cpf,
+                'instituicao_id' => $institutionId,
+                'codModalidade' => $cod
+            ]);
+
+            $details = $detailsOffer->json();
+
+            $PMedium = ($details["QntParcelaMin"] + $details["QntParcelaMax"]) / 2;
+            $ValueAsked = ($details["valorMin"] + $details["valorMax"]) / 2;
+            $ValueToPay = $ValueAsked * (0.05 * $PMedium);
+            // check if the offer already exists
+            $existingOffer = Offer::where([
+                'cpf' => $cpf,
+                'institution_id' => $institutionId,
+                'name_modal' => $nameModal,
+                'cod' => $cod,
+            ])->first();
+
+            $existingOffer->update([
+                'cpf' => $cpf,
+                'instituicao_id' => $institutionId,
+                'codModalidade' => $cod,
+                'PMin' => $details["QntParcelaMin"],
+                'PMax' => $details["QntParcelaMax"],
+                'PMedium' => $PMedium,
+                'VMin' => $details["valorMin"],
+                'VMax' => $details["valorMax"],
+                'VMedium' => $ValueAsked,
+                'TaxesMonth' => $details["jurosMes"],
+                'ValueToPay' => $ValueToPay
+            ]);
+
+            //Update values
+
+            // if it doesn't exist, create a new one
+            if (!$existingOffer) {
+
+                $PMedium = ($details["QntParcelaMin"] + $details["QntParcelaMax"]) / 2;
+                $ValueAsked = ($details["valorMin"] + $details["valorMax"]) / 2;
+                $ValueToPay = $ValueAsked * (0.05 * $PMedium);
+
+                Offer::create([
+                    'cpf' => $cpf,
+                    'institution' => $institutionName,
+                    'institution_id' => $institutionId,
+                    'name_modal' => $nameModal,
+                    'cod' => $cod,
+                    'PMin' => $details["QntParcelaMin"],
+                    'PMax' => $details["QntParcelaMax"],
+                    'PMedium' => $PMedium,
+                    'VMin' => $details["valorMin"],
+                    'VMax' => $details["valorMax"],
+                    'VMedium' => $ValueAsked,
+                    'TaxesMonth' => $details["jurosMes"],
+                    'ValueToPay' => $ValueToPay
+                ]);
+            }
+        }
+    }
+
+    $lowestTaxes = Offer::where('cpf', $cpf)->orderBy('TaxesMonth', 'asc')->take(3)->get();
+    $biggestCredit = Offer::where('cpf', $cpf)->orderBy('VMax', 'desc')->take(3)->get();
+    $lowestParcel = Offer::where('cpf', $cpf)->orderBy('PMin', 'asc')->take(3)->get();
+
+    return view('welcome', compact('lowestTaxes', 'biggestCredit', 'lowestParcel'));
+}
+
 
 }
