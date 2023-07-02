@@ -93,6 +93,7 @@ Execute o seguinte comando para instalar as dependência do composer:
   composer install
 ```
 
+Altere o nome de **.env.example**  para -> **.env**
 
 Execute o seguinte comando para iniciar os contêineres do Laravel Sail:
 
@@ -100,16 +101,18 @@ Execute o seguinte comando para iniciar os contêineres do Laravel Sail:
   ./vendor/bin/sail up
 ```
 
-
-Altere o nome de **.env.example**  para -> **.env**
-
-
-Num novo terminal, **(sem fechar o anterior )** execute o seguinte comando :
+Em caso de erro "Failed to open stream: Permission denied The exception occurred while attempting to log" pare a execução com CTR + C
 
 ```bash
-  php artisan migrate
-
+  sudo chmod o+w ./storage/ -R
 ```
+
+Volte a execute o seguinte comando para iniciar os contêineres do Laravel Sail:
+
+```bash
+  ./vendor/bin/sail up
+```
+
 Rodar a interface abra o seu navegador e coloque a seguinte rota: 
 
 ```bash
