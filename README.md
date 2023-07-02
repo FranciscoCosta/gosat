@@ -101,7 +101,7 @@ Execute o seguinte comando para iniciar os contêineres do Laravel Sail:
   ./vendor/bin/sail up
 ```
 
-Em caso de erro "Failed to open stream: Permission denied The exception occurred while attempting to log" pare a execução com CTR + C
+Em caso de erro "Failed to open stream: Permission denied The exception occurred while attempting to log" pare a execução com CTR + C e execute o comando: 
 
 ```bash
   sudo chmod o+w ./storage/ -R
