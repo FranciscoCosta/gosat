@@ -282,4 +282,27 @@ class OfferController extends Controller
     return response()->json(['bestOffers' => $BiggestCreditResult], 200);
 }
 
+public function getLowestParcel(Request $request)
+{
+$cpf = $request->input('cpf');
+if (empty($cpf)) {
+    return response()->json(['message' => 'CPF not found.'], 422);
+}
+$orderByLowestParcel= Offer::where('cpf', $cpf)->orderBy('PMin', 'asc')->take(3)->get();
+
+$LowestParcelResult = $orderByLowestParcel->map(function ($item, $key) {
+    return [
+        'cpf' => $item->cpf,
+        'institution' => $item->institution,
+        'nameModality' => $item->name_modal,
+        'parcelQuantity' => $item->PMedium,
+        'askedPrice' => $item->VMedium,
+        'LowestParcel' => $item->PMin,
+        'TaxesMonth' => $item->TaxesMonth,
+        'ValueToPay' => $item->ValueToPay
+    ];
+});
+return response()->json(['bestOffers' => $LowestParcelResult], 200);
+}
+
 }

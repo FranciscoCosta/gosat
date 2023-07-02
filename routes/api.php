@@ -17,7 +17,13 @@ Route::post('/offer/details', [OfferController::class, 'offerDetails']);
 //Get the 3 best offers order by taxes
 Route::post('/offers/taxes', [OfferController::class, 'getLowestTaxes']);
 
+
+//Get the 3 best offers order by Biggest Credit
 Route::post('/offers/credit', [OfferController::class, 'getBiggestCredit']);
+
+//Get the 3 best offers order by Lowest Parcel
+Route::post('/offers/parcel', [OfferController::class, 'getLowestParcel']);
+
 
 
 
